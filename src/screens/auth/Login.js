@@ -146,7 +146,11 @@ const Login = ({ navigation }) => {
                                 style={styles.copyButton}
                                 onPress={copyToClipboard}
                             >
-                                <Ionicons name="copy" size={18} color="#fff" />
+                                <Ionicons
+                                    name="copy"
+                                    size={18}
+                                    color="#fff"
+                                />
                             </Ripple>
                         </View>
 
