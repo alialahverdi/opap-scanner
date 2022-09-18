@@ -2,7 +2,6 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 
 // Screens
 import LoginScreen from '../screens/auth/Login';
-import RegisterScreen from '../screens/auth/Register';
 
 // Transition for navigate between screen
 const TransitionScreenOptions = {

@@ -11,7 +11,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 // Stacks and Screen
 import SplashScreen from './src/screens/splash'
 import AuthStack from './src/navigation/AuthStack'
-import AppStack from './src/navigation/AppStack'
 import SupplierStack from "./src/navigation/SupplierStack"
 
 // Wrapper Components

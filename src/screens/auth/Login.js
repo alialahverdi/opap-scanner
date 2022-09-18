@@ -30,8 +30,8 @@ const Login = ({ navigation }) => {
         getUniqueId();
     }, [])
 
-    const getUniqueId = () => {
-        const uniqueId = DeviceInfo.getUniqueId();
+    const getUniqueId = async () => {
+        const uniqueId = await DeviceInfo.getUniqueId();
         setUniqueId(uniqueId);
     }
 
@@ -81,7 +81,7 @@ const Login = ({ navigation }) => {
     const navigateToApp = () => {
         setUsername("")
         setPassword("")
-        navigation.dispatch(StackActions.replace('AppStack'));
+        navigation.dispatch(StackActions.replace('SupplierStack'));
     }
 
     return (

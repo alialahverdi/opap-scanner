@@ -30,7 +30,7 @@ const Splash = ({ navigation }) => {
         const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
         setTimeout(() => {
             if (userInfo !== null && userInfo.LoginDate === today) {
-                navigation.dispatch(StackActions.replace("AppStack"));
+                navigation.dispatch(StackActions.replace("SupplierStack"));
             } else {
                 navigation.dispatch(StackActions.replace("AuthStack"));
             }
