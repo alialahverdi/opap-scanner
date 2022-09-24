@@ -1,7 +1,11 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 // Screens
-import SuppliersScreen from '../screens/suppliers';
+import SuppliersScreen from '../screens/suppliers'
+import ProductsScreen from '../screens/products'
+import ScannerScreen from '../screens/scanner'
+import ArchiveScreen from '../screens/archive'
+import QRCodeResultScreen from '../screens/qrcodeResult'
 
 // Transition for navigate between screen
 const TransitionScreenOptions = {
@@ -20,6 +24,10 @@ const SupplierStack = () => {
             screenOptions={TransitionScreenOptions}
         >
             <Stack.Screen name="SuppliersScreen" component={SuppliersScreen} />
+            <Stack.Screen name="ProductsScreen" component={ProductsScreen} />
+            <Stack.Screen name="ScannerScreen" component={ScannerScreen} />
+            <Stack.Screen name="ArchiveScreen" component={ArchiveScreen} />
+            <Stack.Screen name="QRCodeResultScreen" component={QRCodeResultScreen} />
         </Stack.Navigator>
     )
 }

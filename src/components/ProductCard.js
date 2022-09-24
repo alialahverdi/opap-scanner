@@ -1,147 +1,123 @@
-import { formatNumber } from '../utils/numbersUtils'
-import Ripple from 'react-native-material-ripple'
+import Ripple from "react-native-material-ripple";
+import { formatNumber } from "../utils/numbersUtils";
+import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ProductCard = ({ product, screenType, onPress }) => {
+const ProductCard = ({ product, onExpand, onScann, onArchive }) => {
 
     return (
-        <Ripple onPress={onPress} style={styles.container}>
-            <View style={styles.header}>
-                <Text numberOfLines={1} style={styles.productName}>{product.ProductID} {product.ProductName}</Text>
-                <MaterialCommunityIcons
-                    name="gift-outline"
-                    size={18}
-                    color={product.PromotionDesc === "" ? "gray" : "red"}
-                />
-            </View>
-            <View style={styles.tageContainer}>
-                <View style={styles.supplierContainer}>
-                    <Text style={styles.supplierText}>{product.StockQty} بسته</Text>
-                </View>
-                <View style={styles.supplierContainer}>
-                    <Text style={styles.supplierText}>{product.ExprDate} انقضا</Text>
-                </View>
-                <View style={styles.supplierContainer}>
-                    <Text style={styles.supplierText}>{product.PayDay} روز</Text>
-                </View>
-                <View style={styles.supplierContainer}>
-                    <Text style={styles.supplierText}>{formatNumber(product.SalesPrice)} ریال</Text>
-                </View>
-                <View style={styles.supplierContainer}>
-                    <Text style={styles.supplierText}>{product.SupplierName}</Text>
-                </View>
-            </View>
-            {/* <View style={styles.left}>
-                <Ripple style={styles.orderButton} onPress={onPress} >
-                    <Ionicons
-                        name={screenType === "ProductScreen" ? "eye" : "ios-cart"}
+        <View style={styles.container}>
+            <Ripple
+                style={styles.header}
+                onPress={onExpand}
+            >
+                <View style={styles.supplierInfo}>
+                    <Text style={styles.supplierName}>{product.ProductName}</Text>
+                    <Text>  </Text>
+                    <Text style={styles.supplierName}>{product.ProductID}</Text>
+                    <Text>  </Text>
+                    <Material
+                        name="account-check"
                         size={20}
-                        color="#0351ff"
+                        color="green"
                     />
-                </Ripple>
-            </View>
-            <View style={[
-                styles.right,
-                // screenType == "OrderedProducts" ? { paddingLeft: 0 } : { paddingLeft: 15 },
-                // screenType == "OrderedProducts" ? { flex: .6 } : { flex: .8 }
-            ]}>
-                <Text
-                    numberOfLines={1}
-                    style={styles.productNameText}
-                >
-                    {product.ProductName}
-                </Text>
-                <Text style={styles.salesPriceText}>{formatNumber(product.SalesPrice)}</Text>
-                <View style={styles.supplierContainer}>
-                    <Text style={styles.supplierText}>{product.SupplierName}</Text>
                 </View>
-            </View> */}
-        </Ripple>
+            </Ripple>
+            <View style={{ height: product.layoutHeight }}>
+                <View style={styles.line} />
+                <View style={styles.content}>
+                    <Ripple
+                        style={styles.item}
+                        onPress={onArchive}
+                    >
+                        <Ionicons name="stats-chart" size={22} color="#8000ff" />
+                        <Text style={styles.textContent}>آرشیو</Text>
+                    </Ripple>
+                    <Ripple
+                        style={styles.item}
+                        onPress={onScann}
+                    >
+                        <Ionicons name="ios-cart" size={22} color="#00b300" />
+                        <Text style={styles.textContent}>جدید (اسکن)</Text>
+                    </Ripple>
+                </View>
+            </View>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 4,
+        marginVertical: 2,
         backgroundColor: "#fff",
         borderRadius: 5,
-        paddingTop: Platform.OS === "ios" ? 10 : 5,
-        padding: 10,
-        // paddingHorizontal: 10,
-        // paddingVertical: 10,
-        // flexDirection: "row",
-        justifyContent: "flex-end"
+        marginBottom: 5,
+        paddingVertical: 10,
+        padding: 1,
+        padding: 1,
     },
     header: {
+        // flexDirection: "row",
+        alignItems: "flex-end",
+    },
+    supplierInfo: {
+        width: '100%',
+        justifyContent: "flex-end",
+        paddingHorizontal: 10,
         flexDirection: 'row',
         padding: 1,
-        justifyContent: "flex-end",
-        alignItems: 'flex-start',
-        // backgroundColor: 'red'
     },
-    productName: {
+    supplierName: {
         ...font.black,
         color: "#111",
-        marginRight: 10
-        // textAlign: "right",
+        textAlign: "right",
     },
-    tageContainer: {
-        flexDirection: "row",
-        justifyContent: "flex-end",
+    customerID: {
+        ...font.gray,
+        textAlign: "right",
+        color: "#2367ff",
+        fontSize: 10,
+        marginTop: 8
     },
-    left: {
-        flex: .1,
-        justifyContent: "center",
+    customerAddr: {
+        ...font.gray,
+        textAlign: "right",
+        fontSize: 10
+    },
+    firstletter: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
         alignItems: "center",
-        backgroundColor: 'red'
+        justifyContent: "center"
     },
-    right: {
-        flex: .9,
-        // backgroundColor: "yellow"
-        // alignItems: "flex-end",
+    customerPay: {
+        flexDirection: 'row', paddingHorizontal: 10, color: '#3399ff'
+        , padding: 2,
+        marginVertical: 2
     },
-    orderButton: {
-        width: 35,
-        height: 35,
-        backgroundColor: '#f1f4fc',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
+    line: {
+        height: 1,
+        backgroundColor: '#f0f1f3',
+        marginRight: 10,
+        marginTop: 10
     },
-
-    productNameText: {
-        ...font.black,
-        fontSize: Platform.OS == "android" ? 12 : 14,
-        color: "#18277a"
+    content: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 8,
+        marginRight: 10
     },
-    salesPriceText: {
+    item: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    textContent: {
         ...font.gray,
         fontSize: 12,
-        marginTop: Platform.OS === "ios" ? 10 : 5
-    },
-    // right: {
-    //     flex: .2,
-    //     justifyContent: "center",
-    //     alignItems: "center"
-    // },
-    productIdText: {
-        ...font.black,
-        fontSize: Platform.OS == "android" ? 12 : 14,
-        color: "#2367ff"
-    },
-    supplierContainer: {
-        marginTop: Platform.OS === "ios" ? 15 : 10,
-        paddingVertical: 5,
-        paddingHorizontal: 8,
-        borderRadius: 15,
-        alignItems: 'center',
-        backgroundColor: 'rgba(108, 182, 65, 0.1)',
-        marginLeft: 5
-    },
-    supplierText: {
-        fontFamily: 'IRANSansMobile(FaNum)',
-        fontSize: Platform.OS === "ios" ? 12 : 9,
-        color: '#009933',
+        marginTop: 6
     }
+
 })
 
 export default ProductCard

@@ -1,61 +1,66 @@
 import Ripple from "react-native-material-ripple";
 import { formatNumber } from "../utils/numbersUtils";
+import Material from 'react-native-vector-icons/MaterialCommunityIcons';
+import { onPress } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
 
-const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor, onInfo }) => {
+const SupplierCard = ({ supplier, onPress }) => {
+
+    return (
+        <Ripple
+            style={styles.container}
+            onPress={onPress}
+        >
+            <View style={styles.supplierInfo}>
+                <Text style={styles.supplierName}>{supplier.SupplierName}</Text>
+                <Text>  </Text>
+                <Text style={styles.supplierName}>{supplier.SupplierID}</Text>
+                <Text>  </Text>
+                <Material
+                    name="account-check"
+                    size={20}
+                    color="green"
+                />
+            </View>
+        </Ripple>
+    )
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
+            <Ripple
                 style={styles.header}
-                activeOpacity={.6}
-                onPress={onExpand}
+                onPress={onPress}
             >
-                <View style={styles.customerInfo}>
-                    <Text style={styles.customerName}>{customer.CustomerName}</Text>
+                <View style={styles.supplierInfo}>
+                    <Text style={styles.supplierName}>{supplier.SupplierName}</Text>
                     <Text>  </Text>
-                    <Text style={styles.customerName}>{customer.CustomerID}</Text>
+                    <Text style={styles.supplierName}>{supplier.SupplierID}</Text>
                     <Text>  </Text>
-                    <MaterialCommunityIcons
-                        name={customer.StatusID === 2 ? "account-cancel" : "account-check"}
+                    <Material
+                        name="account-check"
                         size={20}
-                        color={customer.StatusID === 2 ? "red" : "green"}
+                        color="green"
                     />
                 </View>
-
-                <View style={styles.customerInfo}>
-                    <Text style={styles.customerAddr}>{customer.Address}</Text>
-                </View>
-                <View style={styles.customerPay}>
-                    <Text style={[font.black, { fontSize: 12, flex: .5, color: '#1a8cff' }]}>فاکتور باز : {customer.CountOpen}</Text>
-                    <Text style={[font.black, { fontSize: 12, flex: .5, color: '#1a8cff' }]}>مانده مشتری :  {formatNumber(customer.RemAmount)}</Text>
-                </View>
-            </TouchableOpacity>
-            <View style={{ height: customer.layoutHeight }}>
+            </Ripple>
+            {/* <View style={{ height: supplier.layoutHeight }}>
                 <View style={styles.line} />
                 <View style={styles.content}>
                     <Ripple
                         style={styles.item}
-                        onPress={onOpenFactor}
-                    >
-                        <Ionicons name="document-text" size={22} color="#ff6666" />
-                        <Text style={styles.textContent}>فاکتور باز</Text>
-                    </Ripple>
-                    <Ripple
-                        style={styles.item}
-                        onPress={onInfo}
+                    // onPress={onInfo}
                     >
                         <Ionicons name="stats-chart" size={22} color="#8000ff" />
-                        <Text style={styles.textContent}>آنالیز مشتری</Text>
+                        <Text style={styles.textContent}>آرشیو</Text>
                     </Ripple>
                     <Ripple
                         style={styles.item}
-                        onPress={onOrder}
+                    // onPress={onOrder}
                     >
                         <Ionicons name="ios-cart" size={22} color="#00b300" />
-                        <Text style={styles.textContent}>ثبت سفارش</Text>
+                        <Text style={styles.textContent}>جدید (اسکن)</Text>
                     </Ripple>
                 </View>
-            </View>
+            </View> */}
         </View>
     )
 }
@@ -66,16 +71,16 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         marginBottom: 5,
-        // paddingVertical: 5,
+        paddingVertical: 10,
         padding: 1,
-        // elevation: 3,
+        alignItems: "flex-end",
 
     },
     header: {
         // flexDirection: "row",
         alignItems: "flex-end",
     },
-    customerInfo: {
+    supplierInfo: {
         // flex: .7,
         // alignItems: "flex-end",
         // backgroundColor: 'red',
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 1,
     },
-    customerName: {
+    supplierName: {
         ...font.black,
         color: "#111",
         textAlign: "right",
@@ -137,4 +142,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default CustomerCard;
+export default SupplierCard
