@@ -33,8 +33,8 @@
 //                 showMarker
 //                 onRead={this.onSuccess.bind(this)}
 //                 cameraStyle={{ height: SCREEN_HEIGHT }}
-//                 // zoom={.8}
-//                 // flashMode={RNCamera.Constants.FlashMode.torch}
+//                 zoom={.8}
+//                 flashMode={RNCamera.Constants.FlashMode.torch}
 //                 customMarker={
 //                     <View style={styles.rectangleContainer}>
 //                         <View style={styles.topOverlay}>
@@ -127,7 +127,7 @@
 //         height: SCREEN_WIDTH * 0.65,
 //         width: SCREEN_WIDTH,
 //         backgroundColor: overlayColor
-//     },
+//     },makeSlideOutTranslation
 
 //     scanBar: {
 //         width: scanBarWidth,
@@ -143,16 +143,35 @@
 import Layout from '../../components/Layout'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { useRef } from 'react';
-import { useIsFocused } from '@react-navigation/native';
+import { Dimensions } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
+import * as Animatable from "react-native-animatable"
+import Icon from "react-native-vector-icons/Ionicons";
 
+
+const SCREEN_HEIGHT = Dimensions.get("window").height
+const SCREEN_WIDTH = Dimensions.get("window").width
+
+const overlayColor = "rgba(0,0,0,0.5)"; // this gives us a black color with a 50% transparency
+
+const rectDimensions = SCREEN_WIDTH * 0.6; // this is equivalent to 255 from a 393 device width
+const rectBorderWidth = SCREEN_WIDTH * 0.003; // this is equivalent to 2 from a 393 device width
+const rectBorderColor = "red";
+
+const scanBarWidth = SCREEN_WIDTH * 0.46; // this is equivalent to 180 from a 393 device width
+const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 393 device width
+const scanBarColor = "#22ff00";
+
+const iconScanColor = "blue";
 
 
 // Create a component
-const ScannerScreen = ({ navigation }) => {
+const ScannerScreen = ({ navigation, route }) => {
 
     // ------- Constants ------- //
     const qrcode = useRef(null)
-    const isFocused = useIsFocused();
+    const isFocused = useIsFocused()
+    const { product } = route.params
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -162,27 +181,66 @@ const ScannerScreen = ({ navigation }) => {
     }, [isFocused])
 
     const onSuccess = (event) => {
+        console.log('event => ', event)
         navigation.navigate("QRCodeResultScreen", {
             event
         })
-    };
+    }
+
+    const makeSlideOutTranslation = (translationType, fromValue) => {
+        return {
+            from: {
+                [translationType]: SCREEN_WIDTH * 0.3
+            },
+            to: {
+                [translationType]: fromValue
+            }
+        };
+    }
 
 
     return (
         <Layout containerStyle={styles.container}>
             <QRCodeScanner
                 ref={qrcode}
-                onRead={onSuccess}
-                checkAndroid6Permissions={true}
                 showMarker
-                useNativeZoom={true}
-                zoom={.2}
-                markerStyle={{ borderRadius: 10, height: 120, width: 120, borderColor: '#6f74dd' }}
-                bottomContent={
-                    <View style={styles.buttonTouchable}>
-                        <Text style={styles.buttonText}>Please move your camera over the QR Code</Text>
+                checkAndroid6Permissions
+                onRead={onSuccess}
+                cameraStyle={{ height: SCREEN_HEIGHT }}
+                customMarker={
+                    <View style={styles.rectangleContainer}>
+                        <View style={styles.topOverlay}>
+                            <Text style={styles.productName}>{product.ProductID}  {product.ProductName}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: "row" }}>
+                            <View style={styles.leftAndRightOverlay} />
+
+                            <View style={styles.rectangle}>
+                                <Animatable.View
+                                    style={styles.scanBar}
+                                    direction="alternate-reverse"
+                                    iterationCount="infinite"
+                                    duration={3000}
+                                    easing="linear"
+                                    animation={makeSlideOutTranslation(
+                                        "translateY",
+                                        SCREEN_WIDTH * -0.3
+                                    )}
+                                />
+                            </View>
+
+                            <View style={styles.leftAndRightOverlay} />
+                        </View>
+
+                        <View style={styles.bottomOverlay} />
                     </View>
                 }
+            // bottomContent={
+            //     <View style={styles.buttonTouchable}>
+            //         <Text style={styles.buttonText}>Please move your camera over the QR Code</Text>
+            //     </View>
+            // }
             />
         </Layout>
     )
@@ -198,6 +256,57 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 21,
         // color: 'rgb(0,122,255)'
+    },
+    rectangleContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "transparent"
+    },
+    topOverlay: {
+        // flex: 1,
+        height: 100,
+        // flexDirection: 'row',
+        width: SCREEN_WIDTH,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        // backgroundColor: "red",
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    bottomOverlay: {
+        flex: 1,
+        height: SCREEN_WIDTH,
+        width: SCREEN_WIDTH,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: "rgba(0,0,0,0.5)",
+        // backgroundColor: "red",
+        // paddingBottom: SCREEN_WIDTH * 0.25
+    },
+    leftAndRightOverlay: {
+        // height: SCREEN_WIDTH * 0.65,
+        width: SCREEN_WIDTH,
+        backgroundColor: "rgba(0,0,0,0.5)"
+    },
+    scanBar: {
+        width: SCREEN_WIDTH * 0.55,
+        height: scanBarHeight,
+        backgroundColor: "#22ff00"
+    },
+    rectangle: {
+        height: rectDimensions,
+        width: rectDimensions,
+        borderWidth: rectBorderWidth,
+        borderColor: rectBorderColor,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "transparent",
+        borderRadius: 10
+    },
+    productName: {
+        ...font.black,
+        color: "#fff",
+        textAlign: "right",
     },
 })
 

@@ -72,7 +72,7 @@ const ProductsScreen = ({ route, navigation }) => {
             <ProductCard
                 product={item}
                 onExpand={() => openLayoutProduct(index)}
-                onScann={() => navigation.navigate("ScannerScreen")}
+                onScann={() => navigation.navigate("ScannerScreen", { product: item })}
                 onArchive={() => navigation.navigate("ArchiveScreen")}
             />
         )
