@@ -152,17 +152,12 @@ import Icon from "react-native-vector-icons/Ionicons";
 const SCREEN_HEIGHT = Dimensions.get("window").height
 const SCREEN_WIDTH = Dimensions.get("window").width
 
-const overlayColor = "rgba(0,0,0,0.5)"; // this gives us a black color with a 50% transparency
 
 const rectDimensions = SCREEN_WIDTH * 0.6; // this is equivalent to 255 from a 393 device width
 const rectBorderWidth = SCREEN_WIDTH * 0.003; // this is equivalent to 2 from a 393 device width
 const rectBorderColor = "red";
 
-const scanBarWidth = SCREEN_WIDTH * 0.46; // this is equivalent to 180 from a 393 device width
 const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 393 device width
-const scanBarColor = "#22ff00";
-
-const iconScanColor = "blue";
 
 
 // Create a component
@@ -261,7 +256,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
+        borderRadius: 10
     },
     topOverlay: {
         // flex: 1,
@@ -271,7 +267,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.5)",
         // backgroundColor: "red",
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     bottomOverlay: {
         flex: 1,
@@ -291,7 +287,8 @@ const styles = StyleSheet.create({
     scanBar: {
         width: SCREEN_WIDTH * 0.55,
         height: scanBarHeight,
-        backgroundColor: "#22ff00"
+        backgroundColor: "#22ff00",
+        borderRadius: 10
     },
     rectangle: {
         height: rectDimensions,

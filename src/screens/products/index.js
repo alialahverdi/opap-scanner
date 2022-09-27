@@ -72,7 +72,8 @@ const ProductsScreen = ({ route, navigation }) => {
             <ProductCard
                 product={item}
                 onExpand={() => openLayoutProduct(index)}
-                onScann={() => navigation.navigate("ScannerScreen", { product: item })}
+                // onScann={() => navigation.navigate("ScannerScreen", { product: item })}
+                onScann={() => navigation.navigate("QRCodeResultScreen", { product: item, event: {} })}
                 onArchive={() => navigation.navigate("ArchiveScreen")}
             />
         )
