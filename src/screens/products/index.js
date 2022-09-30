@@ -30,7 +30,6 @@ const ProductsScreen = ({ route, navigation }) => {
 
     const getProducts = async () => {
         await api.get(`/product/get?supplierid=${supplier.SupplierID}`).then(res => {
-            console.log('res ====>', res)
             const newProducts = res.content.map(item => {
                 return {
                     ...item,

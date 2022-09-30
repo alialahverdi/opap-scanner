@@ -1,145 +1,3 @@
-// import React, { Component } from "react";
-
-// import { View, Dimensions, Text } from "react-native";
-// import QRCodeScanner from "react-native-qrcode-scanner";
-// import Icon from "react-native-vector-icons/Ionicons";
-// import * as Animatable from "react-native-animatable"
-// import { RNCamera } from "react-native-camera"
-
-// const SCREEN_HEIGHT = Dimensions.get("window").height;
-// const SCREEN_WIDTH = Dimensions.get("window").width;
-
-// console.disableYellowBox = true;
-
-// class QrCodeCamera extends Component {
-//     onSuccess(e) {
-//         alert(e);
-//     }
-
-//     makeSlideOutTranslation(translationType, fromValue) {
-//         return {
-//             from: {
-//                 [translationType]: SCREEN_WIDTH * -0.18
-//             },
-//             to: {
-//                 [translationType]: fromValue
-//             }
-//         };
-//     }
-
-//     render() {
-//         return (
-//             <QRCodeScanner
-//                 showMarker
-//                 onRead={this.onSuccess.bind(this)}
-//                 cameraStyle={{ height: SCREEN_HEIGHT }}
-//                 zoom={.8}
-//                 flashMode={RNCamera.Constants.FlashMode.torch}
-//                 customMarker={
-//                     <View style={styles.rectangleContainer}>
-//                         <View style={styles.topOverlay}>
-//                             <Text style={{ fontSize: 30, color: "white" }}>
-//                                 QR CODE SCANNER
-//                             </Text>
-//                         </View>
-
-//                         <View style={{ flexDirection: "row" }}>
-//                             <View style={styles.leftAndRightOverlay} />
-
-//                             <View style={styles.rectangle}>
-//                                 <Icon
-//                                     name="ios-qr-scanner"
-//                                     size={SCREEN_WIDTH * 0.73}
-//                                     color={iconScanColor}
-//                                 />
-//                                 <Animatable.View
-//                                     style={styles.scanBar}
-//                                     direction="alternate-reverse"
-//                                     iterationCount="infinite"
-//                                     duration={1700}
-//                                     easing="linear"
-//                                     animation={this.makeSlideOutTranslation(
-//                                         "translateY",
-//                                         SCREEN_WIDTH * -0.54
-//                                     )}
-//                                 />
-//                             </View>
-
-//                             <View style={styles.leftAndRightOverlay} />
-//                         </View>
-
-//                         <View style={styles.bottomOverlay} />
-//                     </View>
-//                 }
-//             />
-//         );
-//     }
-// }
-
-// const overlayColor = "rgba(0,0,0,0.5)"; // this gives us a black color with a 50% transparency
-
-// const rectDimensions = SCREEN_WIDTH * 0.65; // this is equivalent to 255 from a 393 device width
-// const rectBorderWidth = SCREEN_WIDTH * 0.005; // this is equivalent to 2 from a 393 device width
-// const rectBorderColor = "red";
-
-// const scanBarWidth = SCREEN_WIDTH * 0.46; // this is equivalent to 180 from a 393 device width
-// const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 393 device width
-// const scanBarColor = "#22ff00";
-
-// const iconScanColor = "blue";
-
-// const styles = {
-//     rectangleContainer: {
-//         flex: 1,
-//         alignItems: "center",
-//         justifyContent: "center",
-//         backgroundColor: "transparent"
-//     },
-
-//     rectangle: {
-//         height: rectDimensions,
-//         width: rectDimensions,
-//         borderWidth: rectBorderWidth,
-//         borderColor: rectBorderColor,
-//         alignItems: "center",
-//         justifyContent: "center",
-//         backgroundColor: "transparent"
-//     },
-
-//     topOverlay: {
-//         flex: 1,
-//         height: SCREEN_WIDTH,
-//         width: SCREEN_WIDTH,
-//         backgroundColor: overlayColor,
-//         justifyContent: "center",
-//         alignItems: "center"
-//     },
-
-//     bottomOverlay: {
-//         flex: 1,
-//         height: SCREEN_WIDTH,
-//         width: SCREEN_WIDTH,
-//         backgroundColor: overlayColor,
-//         paddingBottom: SCREEN_WIDTH * 0.25
-//     },
-
-//     leftAndRightOverlay: {
-//         height: SCREEN_WIDTH * 0.65,
-//         width: SCREEN_WIDTH,
-//         backgroundColor: overlayColor
-//     },makeSlideOutTranslation
-
-//     scanBar: {
-//         width: scanBarWidth,
-//         height: scanBarHeight,
-//         backgroundColor: scanBarColor
-//     }
-// };
-
-// export default QrCodeCamera;
-
-
-
 import Layout from '../../components/Layout'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { useRef } from 'react';
@@ -147,6 +5,7 @@ import { Dimensions } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import * as Animatable from "react-native-animatable"
 import api from '../../services/axiosInstance'
+import useSnackbar from '../../hooks/useSnackbar'
 
 console.disableYellowBox = true;
 
@@ -154,7 +13,7 @@ const SCREEN_HEIGHT = Dimensions.get("window").height
 const SCREEN_WIDTH = Dimensions.get("window").width
 
 
-const rectDimensions = SCREEN_WIDTH * 0.6; // this is equivalent to 255 from a 393 device width
+const rectDimensions = SCREEN_WIDTH * 0.5; // this is equivalent to 255 from a 393 device width
 const rectBorderWidth = SCREEN_WIDTH * 0.003; // this is equivalent to 2 from a 393 device width
 const rectBorderColor = "red";
 const scanBarHeight = SCREEN_WIDTH * 0.0055; //this is equivalent to 1 from a 393 device width
@@ -167,6 +26,7 @@ const ScannerScreen = ({ navigation, route }) => {
     const qrcode = useRef(null)
     const isFocused = useIsFocused()
     const { product } = route.params
+    const { showSnakbar } = useSnackbar()
 
     // ------- States ------- //
     const [spinner, setSpinner] = useState(false)
@@ -179,13 +39,17 @@ const ScannerScreen = ({ navigation, route }) => {
     }, [isFocused])
 
     const onSuccess = async (event) => {
+
         setSpinner(true)
-        // qrcode.current.reactivate()
-        // navigation.navigate("QRCodeResultScreen", {
-        //     event
-        // })
         await api.get(`/uid/get?uid=${event.data}`).then(res => {
             const result = JSON.parse(res.content)
+            if (result.data === null) {
+                showSnakbar({
+                    variant: "error",
+                    message: result.statusMessage
+                })
+                return qrcode.current.reactivate()
+            }
             navigation.navigate("QRCodeResultScreen", {
                 productDetail: result.data,
                 event
@@ -200,7 +64,7 @@ const ScannerScreen = ({ navigation, route }) => {
     const makeSlideOutTranslation = (translationType, fromValue) => {
         return {
             from: {
-                [translationType]: SCREEN_WIDTH * 0.3
+                [translationType]: SCREEN_WIDTH * 0.2
             },
             to: {
                 [translationType]: fromValue
@@ -235,7 +99,7 @@ const ScannerScreen = ({ navigation, route }) => {
                                     easing="linear"
                                     animation={makeSlideOutTranslation(
                                         "translateY",
-                                        SCREEN_WIDTH * -0.3
+                                        SCREEN_WIDTH * -0.2
                                     )}
                                 />
                             </View>
@@ -297,7 +161,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.5)"
     },
     scanBar: {
-        width: SCREEN_WIDTH * 0.55,
+        width: SCREEN_WIDTH * 0.47,
         height: scanBarHeight,
         backgroundColor: "#fff",
         borderRadius: 10

@@ -65,7 +65,7 @@ const Splash = ({ navigation }) => {
                     source={require('../../assets/img/logo.png')}
                     style={{ width: 180, height: 180 }}
                 /> */}
-                <Text style={styles.appName}>Opap</Text>
+                <Text style={styles.appName}>Opap scanner</Text>
             </Animatable.View>
             <Text style={styles.version}>Version : 0.1.0</Text>
         </Layout>

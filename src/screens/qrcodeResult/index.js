@@ -4,6 +4,7 @@ import IconButton from '../../components/Button/IconButton'
 import Input from '../../components/Input'
 import FullButton from '../../components/Button/FullButton'
 import Ripple from 'react-native-material-ripple'
+import { value } from 'deprecated-react-native-prop-types/DeprecatedTextInputPropTypes'
 
 
 // Create a component
@@ -14,23 +15,36 @@ const QRCodeResultScreen = ({ navigation, route }) => {
 
     // console.log('productDetail =======>', productDetail)
     // ------- States ------- //
-    const [count, setCount] = useState("")
-    const [snackbarMessage, setSnackbarMessage] = useState(null)
+    const [data, setData] = useState({
+        count: "",
+        warehouse: "distribution"
+    })
 
     // ------- Logic or Functions ------- //
 
     const increase = () => {
-        setCount(prev => {
-            const numCount = Number(prev) + 1
-            return numCount.toString()
+        setData(prev => {
+            const numCount = Number(prev.count) + 1
+            return {
+                ...prev,
+                count: numCount.toString()
+            }
         })
     }
 
     const decrease = () => {
-        setCount(prev => {
-            const numCount = Number(prev) - 1
-            if (numCount <= 0) return ""
-            return numCount.toString()
+        setData(prev => {
+            const numCount = Number(prev.count) - 1
+            if (numCount <= 0) {
+                return {
+                    ...prev,
+                    count: ""
+                }
+            }
+            return {
+                ...prev,
+                count: numCount.toString()
+            }
         })
     }
 
@@ -58,8 +72,13 @@ const QRCodeResultScreen = ({ navigation, route }) => {
                         <Input
                             placeholder="تعداد"
                             keyboardType="numeric"
-                            value={count}
-                            onChangeText={setCount}
+                            value={data.count}
+                            onChangeText={value => setData(prev => {
+                                return {
+                                    ...prev,
+                                    count: value
+                                }
+                            })}
                         />
                     </View>
                     <View style={styles.basicContainer}>
@@ -67,31 +86,67 @@ const QRCodeResultScreen = ({ navigation, route }) => {
                     </View>
                 </View>
                 <View style={styles.warehouseContainer}>
-                    <Ripple style={styles.warehouse}>
+                    <Ripple
+                        style={styles.warehouse}
+                        onPress={() => setData(prev => {
+                            return {
+                                ...prev,
+                                warehouse: "quarantine"
+                            }
+                        })}
+                    >
                         <Text style={styles.warehouseText}>انبار قرنطینه</Text>
                         <Ionicons
-                            // name={item.selected ? "checkbox-outline" : "square-outline"}
-                            name="square-outline"
+                            name={data.warehouse === "quarantine" ? "radio-button-on-outline" : "radio-button-off-outline"}
                             size={25}
                             color="#0351ff"
                         />
                     </Ripple>
-                    <Ripple style={styles.warehouse}>
+                    <Ripple
+                        style={styles.warehouse}
+                        onPress={() => setData(prev => {
+                            return {
+                                ...prev,
+                                warehouse: "distribution"
+                            }
+                        })}
+                    >
                         <Text style={styles.warehouseText}>انبار توزیع</Text>
                         <Ionicons
-                            // name={item.selected ? "checkbox-outline" : "square-outline"}
-                            name="checkbox-outline"
+                            name={data.warehouse === "distribution" ? "radio-button-on-outline" : "radio-button-off-outline"}
                             size={25}
                             color="#0351ff"
                         />
                     </Ripple>
+                </View>
+
+                <View style={styles.content}>
+                    <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail?.PersianProductName || ""}</Text>
+                        <Text style={styles.key}>کالا</Text>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail?.LicenseOwner || ""}</Text>
+                        <Text style={styles.key}>تامین کننده</Text>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail?.Expiration || ""}</Text>
+                        <Text style={styles.key}>تاریخ انقضا</Text>
+                    </View>
+                    {/* <View style={styles.line} />
+                    <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail.PackageCount}</Text>
+                        <Text style={styles.key}>تعداد در بسته</Text>
+                    </View> */}
                 </View>
             </View>
             <View style={styles.footer}>
                 <View style={{ flex: .5 }}>
                     <FullButton
                         title="بازگشت"
-                        onPress={onCancel}
+                        onPress={() => navigation.navigate("ProductsScreen")}
                     />
                 </View>
                 <View style={{ flex: .5, marginLeft: 20 }}>
@@ -127,6 +182,9 @@ const styles = StyleSheet.create({
         flex: 6,
         height: 40
     },
+    input: {
+        // fontSize: 20
+    },
     basicContainer: {
         flex: 2,
         alignItems: "center"
@@ -146,6 +204,31 @@ const styles = StyleSheet.create({
     warehouseText: {
         ...font.gray,
         marginRight: 5
+    },
+    content: {
+        paddingHorizontal: 35,
+        paddingVertical: 10,
+    },
+    rowContent: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginVertical: 5
+    },
+    key: {
+        ...font.gray,
+        fontSize: 16
+    },
+    value: {
+        ...font.black,
+        color: "#2367ff",
+        fontSize: 16
+    },
+    line: {
+        height: .5,
+        width: '100%',
+        backgroundColor: 'gray',
+        // backgroundColor: 'red',
+        marginVertical: 5
     },
     footer: {
         margin: 20,
