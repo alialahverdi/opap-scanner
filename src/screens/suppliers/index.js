@@ -11,7 +11,7 @@ const SuppliersScreen = ({ navigation }) => {
     // ------- States ------- //
     const [allSuppliers, setAllSuppliers] = useState([])
     const [renderedSuppliers, setRenderedSuppliers] = useState([])
-    const [prevIndex, setPrevIndex] = useState([])
+    const [supplierSpinner, setSupplierSpinner] = useState(true)
     const [searchedSupplierText, setSearchedSupplierText] = useState("")
     const [refreshing, setRefreshing] = useState(false)
 
@@ -24,6 +24,7 @@ const SuppliersScreen = ({ navigation }) => {
         await api.get('/supplier/get').then(res => {
             setAllSuppliers(res.content)
             setRenderedSuppliers(res.content)
+            setSupplierSpinner(false)
         }).catch(() => { })
     }
 
@@ -69,23 +70,38 @@ const SuppliersScreen = ({ navigation }) => {
 
     return (
         <Layout>
-            <View style={{ flexDirection: 'row' }}>
-                <SearchbarHeader text={searchedSupplierText} onChangeText={onSearchSuppliers} />
-            </View>
-            <FlatList
-                style={{ paddingHorizontal: 10 }}
-                data={renderedSuppliers}
-                renderItem={showSuppliers}
-                keyExtractor={(item, index) => index.toString()}
-                refreshing={refreshing}
-                onRefresh={handleRefresh}
-            />
+            {supplierSpinner && (
+                <View style={styles.centerScreen}>
+                    <ActivityIndicator size="small" color="#6f74dd" />
+                </View>
+            )}
+            {!supplierSpinner && (
+                <>
+                    <View style={{ flexDirection: 'row' }}>
+                        <SearchbarHeader text={searchedSupplierText} onChangeText={onSearchSuppliers} />
+                    </View>
+                    <FlatList
+                        style={{ paddingHorizontal: 10 }}
+                        data={renderedSuppliers}
+                        renderItem={showSuppliers}
+                        keyExtractor={(item, index) => index.toString()}
+                    // refreshing={refreshing}
+                    // onRefresh={handleRefresh}
+                    />
+                </>
+            )}
+
         </Layout>
     )
 }
 
 // define your styles
 const styles = StyleSheet.create({
+    centerScreen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
 
 //make this component available to the app

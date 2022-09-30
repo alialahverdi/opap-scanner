@@ -93,10 +93,10 @@ const Login = ({ navigation }) => {
                         useNativeDriver={true}
                     >
                         <View style={styles.imgContainer}>
-                            <Image
+                            {/* <Image
                                 source={require('../../assets/img/logo.png')}
                                 style={{ width: 180, height: 180 }}
-                            />
+                            /> */}
                         </View>
                         <View style={styles.inputContainer}>
                             <TextInput

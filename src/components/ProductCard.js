@@ -51,12 +51,15 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         marginBottom: 5,
-        paddingVertical: 10,
         padding: 1,
         padding: 1,
     },
     header: {
         // flexDirection: "row",
+        paddingVertical: 15,
+        flex: 1,
+        height: '100%',
+        // backgroundColor: 'red',
         alignItems: "flex-end",
     },
     supplierInfo: {

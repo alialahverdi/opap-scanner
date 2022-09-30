@@ -43,10 +43,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#e0e0e0"
     },
     activeTitle: {
-        ...font.white
+        ...font.white,
+        fontSize: 18
     },
     deactiveTitle: {
-        ...font.disableBold
+        ...font.disableBold,
+        fontSize: 20
     }
 })
 

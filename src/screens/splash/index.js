@@ -61,10 +61,10 @@ const Splash = ({ navigation }) => {
                 duration={2000}
                 useNativeDriver={true}
                 style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Image
+                {/* <Image
                     source={require('../../assets/img/logo.png')}
                     style={{ width: 180, height: 180 }}
-                />
+                /> */}
                 <Text style={styles.appName}>Opap</Text>
             </Animatable.View>
             <Text style={styles.version}>Version : 0.1.0</Text>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     appName: {
-        ...font.whiteBold,
+        // ...font.whiteBold,
         fontSize: 25
     },
     version: {

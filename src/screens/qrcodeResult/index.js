@@ -10,8 +10,9 @@ import Ripple from 'react-native-material-ripple'
 const QRCodeResultScreen = ({ navigation, route }) => {
 
     // ------- Constants ------- //
-    const { event, scanner } = route.params
+    const { productDetail, event, scanner } = route.params
 
+    // console.log('productDetail =======>', productDetail)
     // ------- States ------- //
     const [count, setCount] = useState("")
     const [snackbarMessage, setSnackbarMessage] = useState(null)
@@ -33,7 +34,11 @@ const QRCodeResultScreen = ({ navigation, route }) => {
         })
     }
 
-    const submit = () => {
+    const onSubmit = () => {
+
+    }
+
+    const onCancel = () => {
 
     }
 
@@ -41,7 +46,7 @@ const QRCodeResultScreen = ({ navigation, route }) => {
     return (
         <Layout containerStyle={styles.container}>
             <Header
-                title="result"
+                title="جزییات کالا"
                 goBack={{}}
             />
             <View style={styles.body}>
@@ -83,11 +88,18 @@ const QRCodeResultScreen = ({ navigation, route }) => {
                 </View>
             </View>
             <View style={styles.footer}>
-                <FullButton
-                    title="ثبت"
-                    // disabled={count != "" ? false : true}
-                    onPress={submit}
-                />
+                <View style={{ flex: .5 }}>
+                    <FullButton
+                        title="بازگشت"
+                        onPress={onCancel}
+                    />
+                </View>
+                <View style={{ flex: .5, marginLeft: 20 }}>
+                    <FullButton
+                        title="ارسال"
+                        onPress={onSubmit}
+                    />
+                </View>
             </View>
         </Layout>
     )
@@ -128,14 +140,16 @@ const styles = StyleSheet.create({
         flex: .5,
         flexDirection: "row",
         justifyContent: "flex-end",
-        alignItems: "center"
+        alignItems: "center",
+        paddingVertical: 10
     },
     warehouseText: {
         ...font.gray,
         marginRight: 5
     },
     footer: {
-        marginVertical: 10
+        margin: 20,
+        flexDirection: "row"
     }
 })
 

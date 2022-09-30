@@ -1,7 +1,6 @@
 import Ripple from "react-native-material-ripple";
 import { formatNumber } from "../utils/numbersUtils";
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
-import { onPress } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
 
 const SupplierCard = ({ supplier, onPress }) => {
 
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         marginBottom: 5,
-        paddingVertical: 10,
+        paddingVertical: 15,
         padding: 1,
         alignItems: "flex-end",
 
@@ -81,9 +80,6 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
     },
     supplierInfo: {
-        // flex: .7,
-        // alignItems: "flex-end",
-        // backgroundColor: 'red',
         paddingHorizontal: 10,
         flexDirection: 'row',
         padding: 1,

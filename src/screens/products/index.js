@@ -21,6 +21,7 @@ const ProductsScreen = ({ route, navigation }) => {
     const [prevIndex, setPrevIndex] = useState([])
     const [searchedProductText, setSearchedProductText] = useState("")
     const [refreshing, setRefreshing] = useState(false)
+    const [productSpinner, setProductSpinner] = useState(true)
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -29,6 +30,7 @@ const ProductsScreen = ({ route, navigation }) => {
 
     const getProducts = async () => {
         await api.get(`/product/get?supplierid=${supplier.SupplierID}`).then(res => {
+            console.log('res ====>', res)
             const newProducts = res.content.map(item => {
                 return {
                     ...item,
@@ -37,6 +39,7 @@ const ProductsScreen = ({ route, navigation }) => {
             })
             setAllProducts(newProducts)
             setRenderedProducts(newProducts)
+            setProductSpinner(false)
         }).catch(() => { })
     }
 
@@ -72,8 +75,8 @@ const ProductsScreen = ({ route, navigation }) => {
             <ProductCard
                 product={item}
                 onExpand={() => openLayoutProduct(index)}
-                // onScann={() => navigation.navigate("ScannerScreen", { product: item })}
-                onScann={() => navigation.navigate("QRCodeResultScreen", { product: item, event: {} })}
+                onScann={() => navigation.navigate("ScannerScreen", { product: item })}
+                // onScann={() => navigation.navigate("QRCodeResultScreen", { product: item, event: {} })}
                 onArchive={() => navigation.navigate("ArchiveScreen")}
             />
         )
@@ -108,23 +111,37 @@ const ProductsScreen = ({ route, navigation }) => {
 
     return (
         <Layout>
-            <View style={{ flexDirection: 'row' }}>
-                <SearchbarHeader text={searchedProductText} onChangeText={onSearchSuppliers} />
-            </View>
-            <FlatList
-                style={{ paddingHorizontal: 10 }}
-                data={renderedProducts}
-                renderItem={showProducts}
-                keyExtractor={(item, index) => index.toString()}
-                refreshing={refreshing}
-                onRefresh={handleRefresh}
-            />
+            {productSpinner && (
+                <View style={styles.centerScreen}>
+                    <ActivityIndicator size="small" color="#6f74dd" />
+                </View>
+            )}
+            {!productSpinner && (
+                <>
+                    <View style={{ flexDirection: 'row' }}>
+                        <SearchbarHeader text={searchedProductText} onChangeText={onSearchSuppliers} />
+                    </View>
+                    <FlatList
+                        style={{ paddingHorizontal: 10 }}
+                        data={renderedProducts}
+                        renderItem={showProducts}
+                        keyExtractor={(item, index) => index.toString()}
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                    />
+                </>
+            )}
         </Layout>
     )
 }
 
 // define your styles
 const styles = StyleSheet.create({
+    centerScreen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
 
 //make this component available to the app
