@@ -6,6 +6,7 @@ import FullButton from '../../components/Button/FullButton'
 import Ripple from 'react-native-material-ripple'
 import api from '../../services/axiosInstance'
 import useSnackbar from '../../hooks/useSnackbar'
+import { StackActions } from '@react-navigation/native'
 
 
 // Create a component
@@ -78,21 +79,20 @@ const QRCodeResultScreen = ({ navigation, route }) => {
             StatusMessage: productDetail.StatusMessage || "",
             UID: productDetail.UID || ""
         }
-        console.log('befor')
         await api.post('/uid/insert', params)
             .then(res => {
-                console.log('res', res)
+                showSnakbar({
+                    variant: "success",
+                    message: "محصول با موفقیت ثبت شد."
+                })
+                if (res.code === 1) {
+                    navigation.navigate("ProductsScreen")
+                }
             })
             .catch(error => { })
             .finally(() => {
                 setSpinner(false)
             })
-
-        console.log('after')
-    }
-
-    const onCancel = () => {
-
     }
 
 
@@ -100,7 +100,7 @@ const QRCodeResultScreen = ({ navigation, route }) => {
         <Layout containerStyle={styles.container}>
             <Header
                 title="جزییات کالا"
-                goBack={{}}
+                goBack={() => navigation.navigate("ProductsScreen")}
             />
             <View style={styles.body}>
                 <View style={styles.addToBasketContainer}>
