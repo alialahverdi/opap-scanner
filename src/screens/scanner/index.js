@@ -39,7 +39,6 @@ const ScannerScreen = ({ navigation, route }) => {
     }, [isFocused])
 
     const onSuccess = async (event) => {
-
         setSpinner(true)
         await api.get(`/uid/get?uid=${event.data}`).then(res => {
             const result = JSON.parse(res.content)
@@ -50,9 +49,13 @@ const ScannerScreen = ({ navigation, route }) => {
                 })
                 return qrcode.current.reactivate()
             }
+            const params = {
+                ...result.data,
+                ProductID: product.ProductID,
+                StatusMessage: result.statusMessage || ""
+            }
             navigation.navigate("QRCodeResultScreen", {
-                productDetail: result.data,
-                event
+                productDetail: params
             })
         })
             .catch(() => { })

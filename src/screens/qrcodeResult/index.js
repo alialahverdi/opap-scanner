@@ -4,17 +4,19 @@ import IconButton from '../../components/Button/IconButton'
 import Input from '../../components/Input'
 import FullButton from '../../components/Button/FullButton'
 import Ripple from 'react-native-material-ripple'
-import { value } from 'deprecated-react-native-prop-types/DeprecatedTextInputPropTypes'
+import api from '../../services/axiosInstance'
+import useSnackbar from '../../hooks/useSnackbar'
 
 
 // Create a component
 const QRCodeResultScreen = ({ navigation, route }) => {
 
     // ------- Constants ------- //
-    const { productDetail, event, scanner } = route.params
+    const { productDetail } = route.params
+    const { showSnakbar } = useSnackbar()
 
-    // console.log('productDetail =======>', productDetail)
     // ------- States ------- //
+    const [spinner, setSpinner] = useState(false)
     const [data, setData] = useState({
         count: "",
         warehouse: "distribution"
@@ -48,8 +50,45 @@ const QRCodeResultScreen = ({ navigation, route }) => {
         })
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        if (data.count === "") {
+            return showSnakbar({
+                variant: "error",
+                message: "تعداد محصول را وارد کنید"
+            })
+        }
+        setSpinner(true)
+        const params = {
+            ProductID: productDetail.ProductID,
+            Qty: Number(data.count),
+            StockID: data.warehouse === "distribution" ? 0 : 1,
+            BatchCode: productDetail.BatchCode || "",
+            EnglishProductName: productDetail.EnglishProductName || "",
+            Expiration: productDetail.Expiration || "",
+            GTIN: productDetail.GTIN || "",
+            GenericCode: productDetail.GenericCode || 0,
+            GenericName: productDetail.GenericName || "",
+            IRC: productDetail.IRC || "",
+            LicenseOwner: productDetail.LicenseOwner || "",
+            Manufacturing: productDetail.Manufacturing || "",
+            PackageCount: productDetail.PackageCount || 0,
+            PersianProductName: productDetail.PersianProductName || "",
+            ProductCategory: productDetail.ProductCategory || "",
+            StatusCode: productDetail.StatusCode || 0,
+            StatusMessage: productDetail.StatusMessage || "",
+            UID: productDetail.UID || ""
+        }
+        console.log('befor')
+        await api.post('/uid/insert', params)
+            .then(res => {
+                console.log('res', res)
+            })
+            .catch(error => { })
+            .finally(() => {
+                setSpinner(false)
+            })
 
+        console.log('after')
     }
 
     const onCancel = () => {
@@ -152,6 +191,7 @@ const QRCodeResultScreen = ({ navigation, route }) => {
                 <View style={{ flex: .5, marginLeft: 20 }}>
                     <FullButton
                         title="ارسال"
+                        isLoading={spinner}
                         onPress={onSubmit}
                     />
                 </View>

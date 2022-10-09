@@ -72,7 +72,7 @@ const SuppliersScreen = ({ navigation }) => {
         <Layout>
             {supplierSpinner && (
                 <View style={styles.centerScreen}>
-                    <ActivityIndicator size="small" color="#6f74dd" />
+                    <ActivityIndicator size="large" color="#6f74dd" />
                 </View>
             )}
             {!supplierSpinner && (
