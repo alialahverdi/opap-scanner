@@ -7,6 +7,7 @@ import Ripple from 'react-native-material-ripple'
 import api from '../../services/axiosInstance'
 import useSnackbar from '../../hooks/useSnackbar'
 import { StackActions } from '@react-navigation/native'
+import { ScrollView } from 'react-native'
 
 
 // Create a component
@@ -14,6 +15,7 @@ const QRCodeResultScreen = ({ navigation, route }) => {
 
     // ------- Constants ------- //
     const { productDetail } = route.params
+    console.log('productDetail', productDetail)
     const { showSnakbar } = useSnackbar()
 
     // ------- States ------- //
@@ -102,7 +104,7 @@ const QRCodeResultScreen = ({ navigation, route }) => {
                 title="جزییات کالا"
                 goBack={() => navigation.navigate("ProductsScreen")}
             />
-            <View style={styles.body}>
+            <ScrollView style={styles.body}>
                 <View style={styles.addToBasketContainer}>
                     <View style={styles.outlineContainer}>
                         <IconButton outline iconName="remove" onPress={decrease} />
@@ -161,17 +163,37 @@ const QRCodeResultScreen = ({ navigation, route }) => {
 
                 <View style={styles.content}>
                     <View style={styles.rowContent}>
-                        <Text style={styles.value}>{productDetail?.PersianProductName || ""}</Text>
-                        <Text style={styles.key}>کالا</Text>
+                        <Text style={styles.value}>{productDetail?.PersianProductName || "-"}</Text>
+                        <Text style={styles.key}>نام کالا</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={styles.rowContent}>
-                        <Text style={styles.value}>{productDetail?.LicenseOwner || ""}</Text>
+                        <Text style={styles.value}>{productDetail?.LicenseOwner || "-"}</Text>
                         <Text style={styles.key}>تامین کننده</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={styles.rowContent}>
-                        <Text style={styles.value}>{productDetail?.Expiration || ""}</Text>
+                        <Text style={styles.value}>{productDetail?.IRC || "-"}</Text>
+                        <Text style={styles.key}>IRC</Text>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail?.BatchCode || "-"}</Text>
+                        <Text style={styles.key}>سری ساخت</Text>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail?.GTIN || "-"}</Text>
+                        <Text style={styles.key}>GTIN</Text>
+                    </View>
+                    <View style={styles.line} />
+                    {/* <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail?.StatusCode || "-"}</Text>
+                        <Text style={styles.key}>StatusCode</Text>
+                    </View> */}
+                    {/* <View style={styles.line} /> */}
+                    <View style={styles.rowContent}>
+                        <Text style={styles.value}>{productDetail?.Expiration || "-"}</Text>
                         <Text style={styles.key}>تاریخ انقضا</Text>
                     </View>
                     {/* <View style={styles.line} />
@@ -180,7 +202,7 @@ const QRCodeResultScreen = ({ navigation, route }) => {
                         <Text style={styles.key}>تعداد در بسته</Text>
                     </View> */}
                 </View>
-            </View>
+            </ScrollView>
             <View style={styles.footer}>
                 <View style={{ flex: .5 }}>
                     <FullButton
