@@ -25,13 +25,13 @@ const ProductCard = ({ product, onExpand, onScann, onArchive }) => {
             <View style={{ height: product.layoutHeight }}>
                 <View style={styles.line} />
                 <View style={styles.content}>
-                    <Ripple
+                    {/* <Ripple
                         style={styles.item}
                         onPress={onArchive}
                     >
                         <Ionicons name="stats-chart" size={22} color="#8000ff" />
                         <Text style={styles.textContent}>آرشیو</Text>
-                    </Ripple>
+                    </Ripple> */}
                     <Ripple
                         style={styles.item}
                         onPress={onScann}
