@@ -15,7 +15,7 @@ const SCREEN_WIDTH = Dimensions.get("window").width
 
 const rectDimensions = SCREEN_WIDTH * 0.5; // this is equivalent to 255 from a 393 device width
 const rectBorderWidth = SCREEN_WIDTH * 0.003; // this is equivalent to 2 from a 393 device width
-const rectBorderColor = "red";
+const rectBorderColor = themeColor.primary
 const scanBarHeight = SCREEN_WIDTH * 0.0055; //this is equivalent to 1 from a 393 device width
 
 

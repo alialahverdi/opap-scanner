@@ -22,6 +22,7 @@ const ProductsScreen = ({ route, navigation }) => {
     const [searchedProductText, setSearchedProductText] = useState("")
     const [refreshing, setRefreshing] = useState(false)
     const [productSpinner, setProductSpinner] = useState(true)
+    const [isRendered, setIsRendered] = useState(false)
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -42,12 +43,14 @@ const ProductsScreen = ({ route, navigation }) => {
         }).catch(() => { })
     }
 
-    const onSearchSuppliers = (text) => {
+    const onSearchProducts = (text) => {
         const clonedProducts = [...allProducts]
+        if (text == "") { setIsRendered(false) }
         const searchedProducts = clonedProducts.filter(item => {
             return contains(item, text)
         })
         setRenderedProducts(searchedProducts)
+        setIsRendered(true)
         setSearchedProductText(text)
     }
 
@@ -75,7 +78,6 @@ const ProductsScreen = ({ route, navigation }) => {
                 product={item}
                 onExpand={() => openLayoutProduct(index)}
                 onScann={() => navigation.navigate("ScannerScreen", { product: item })}
-                // onScann={() => navigation.navigate("QRCodeResultScreen", { product: item, event: {} })}
                 onArchive={() => navigation.navigate("ArchiveScreen")}
             />
         )
@@ -84,7 +86,7 @@ const ProductsScreen = ({ route, navigation }) => {
     const openLayoutProduct = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
 
-        const productsCloned = searchedProductText === "" ? [...renderedProducts] : [...allProducts]
+        const productsCloned = isRendered == true ? [...renderedProducts] : [...allProducts]
         if (prevIndex.includes(index)) {
             productsCloned[index].layoutHeight = 0;
             setRenderedProducts(productsCloned)
@@ -118,7 +120,7 @@ const ProductsScreen = ({ route, navigation }) => {
             {!productSpinner && (
                 <>
                     <View style={{ flexDirection: 'row' }}>
-                        <SearchbarHeader text={searchedProductText} onChangeText={onSearchSuppliers} />
+                        <SearchbarHeader text={searchedProductText} onChangeText={onSearchProducts} />
                     </View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}

@@ -17,7 +17,7 @@ const SupplierCard = ({ supplier, onPress }) => {
                 <Material
                     name="account-check"
                     size={20}
-                    color="green"
+                    color={themeColor.primary}
                 />
             </View>
         </Ripple>

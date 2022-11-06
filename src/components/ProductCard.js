@@ -15,10 +15,10 @@ const ProductCard = ({ product, onExpand, onScann, onArchive }) => {
                     <Text>  </Text>
                     <Text style={styles.supplierName}>{product.ProductID}</Text>
                     <Text>  </Text>
-                    <Material
-                        name="account-check"
+                    <Ionicons
+                        name="medkit-outline"
                         size={20}
-                        color="green"
+                        color={themeColor.primary}
                     />
                 </View>
             </Ripple>
@@ -36,7 +36,7 @@ const ProductCard = ({ product, onExpand, onScann, onArchive }) => {
                         style={styles.item}
                         onPress={onScann}
                     >
-                        <Ionicons name="ios-cart" size={22} color="#00b300" />
+                        <Material name="barcode-scan" size={22} color={themeColor.primary} />
                         <Text style={styles.textContent}>جدید (اسکن)</Text>
                     </Ripple>
                 </View>
