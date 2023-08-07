@@ -1,4 +1,18 @@
 {
+  "author": {
+    "email": "smhmayboudi@gmail.com",
+    "name": "Hossein Mayboudi",
+    "url": "https://www.linkedin.com/in/smhmayboudi/"
+    },
+    "contributors": [
+    {
+    "email": "amin.mha5@gmail.com",
+    "name": "Amin Mohammadi",
+    "url": "https://www.linkedin.com/in/amin-mha/",
+    "website": "https://www.aminmohammadi.me"
+    }
+    
+    ],
   "name": "opapscanner",
   "version": "0.0.1",
   "private": true,
